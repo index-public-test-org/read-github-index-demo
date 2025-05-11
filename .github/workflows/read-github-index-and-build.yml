@@ -33,9 +33,6 @@ jobs:
         xcode-version: ${{ fromJson(needs.read-github-index.outputs.xcode-versions) }}
         runner: ${{ fromJson(needs.read-github-index.outputs.runners) }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
       - name: Run Preternatural Build
         uses: PreternaturalAI/preternatural-github-actions/preternatural-build@main
         with:
