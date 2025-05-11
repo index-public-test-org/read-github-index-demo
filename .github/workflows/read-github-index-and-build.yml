@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Read GitHub Index
         id: read-index
-        uses: PreternaturalAI/preternatural-github-actions/preternatural-read-github-index@aksh1t/ENG-2323
+        uses: PreternaturalAI/preternatural-github-actions/preternatural-read-github-index@main
         with:
           github-index-repo: ${{ secrets.GH_INDEX_REPO }}
           github-index-read-only-pat: ${{ secrets.GH_INDEX_REPO_READ_PAT }}
