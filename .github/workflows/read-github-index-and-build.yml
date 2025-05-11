@@ -1,0 +1,42 @@
+name: Read Github Index and Build
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  read-github-index:
+    name: Read GitHub Index
+    runs-on: macos-latest
+    outputs:
+      xcode-versions: ${{ steps.read-index.outputs.xcode-versions }}
+      runners: ${{ steps.read-index.outputs.runners }}
+    steps:
+      - name: Read GitHub Index
+        id: read-index
+        uses: PreternaturalAI/preternatural-github-actions/preternatural-read-github-index@main
+        with:
+          github-index-url: ${{ secrets.GITHUB_INDEX_URL }}
+          github-index-read-only-pat: ${{ secrets.GITHUB_INDEX_READ_ONLY_PAT }}
+
+  preternatural-build:
+    name: Build (Xcode ${{ matrix.xcode-version }} on ${{ matrix.runner }})
+    needs: read-github-index
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        xcode-version: ${{ fromJson(needs.read-github-index.outputs.xcode-versions) }}
+        runner: ${{ fromJson(needs.read-github-index.outputs.runners) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run Preternatural Build
+        uses: PreternaturalAI/preternatural-github-actions/preternatural-build@main
+        with:
+          xcode-version: ${{ matrix.xcode-version }}
