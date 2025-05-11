@@ -18,10 +18,10 @@ jobs:
     steps:
       - name: Read GitHub Index
         id: read-index
-        uses: PreternaturalAI/preternatural-github-actions/preternatural-read-github-index@main
+        uses: PreternaturalAI/preternatural-github-actions/preternatural-read-github-index@aksh1t/ENG-2323
         with:
-          github-index-url: ${{ secrets.GITHUB_INDEX_URL }}
-          github-index-read-only-pat: ${{ secrets.GITHUB_INDEX_READ_ONLY_PAT }}
+          github-index-repo: ${{ secrets.GH_INDEX_REPO }}
+          github-index-read-only-pat: ${{ secrets.GH_INDEX_REPO_READ_PAT }}
 
   preternatural-build:
     name: Build (Xcode ${{ matrix.xcode-version }} on ${{ matrix.runner }})
